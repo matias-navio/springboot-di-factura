@@ -2,8 +2,14 @@ package com.matias.springboot.di.factura.springbootdifactura.models;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Component
+// se pone tambien a este porque si no se crean nuevas instancias del client y se concatena el nombre
+@RequestScope
+@JsonIgnoreProperties({"advisors", "targetSource"})
 public class Client {
 
     @Value("${config.client.name}")

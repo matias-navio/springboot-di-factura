@@ -1,6 +1,5 @@
 package com.matias.springboot.di.factura.springbootdifactura;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,16 +18,23 @@ import com.matias.springboot.di.factura.springbootdifactura.models.Product;
 public class AppConfig {
 
     // lo que devulve este metodo se guarda como componente de spring
-    @Bean
+    @Bean("tecnologi")
     List<Item> itemsInvoice(){
-        Product p1 = new Product("Camara SONY", 800d);
-        Product p2 = new Product("Notebook Lenovo", 1500d);
-        Product p3 = new Product("Playstation 5", 1300d);
 
         return Arrays.asList(
-            new Item(p1, 1),
-            new Item(p2, 2),
-            new Item(p3, 1)
+            new Item(new Product("Camara SONY", 800d), 1),
+            new Item(new Product("Notebook Lenovo", 1000d), 2)
+        );
+    }
+
+    @Bean("office")
+    List<Item> itemsInvoiceOffice(){
+
+        return Arrays.asList(
+            new Item(new Product("Escritorio Platinum", 300d), 3),
+            new Item(new Product("Monitor SAMSUNG 24'", 1000d), 2),
+            new Item(new Product("Impresona HP", 550d), 2),
+            new Item(new Product("Mouse Genius", 50d), 4)
         );
     }
 }

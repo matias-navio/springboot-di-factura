@@ -3,20 +3,46 @@ package com.matias.springboot.di.factura.springbootdifactura.models;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 @Component
+// define el alcance de un bean, se debe crear una instancia en cada rquest HTTP, se limita el ciclo de vida 
+@RequestScope
+@JsonIgnoreProperties({"advisors", "targetSource"})
 public class Invoice {
 
     @Autowired
     private Client client;
 
-    @Value("${config.invoice.description}")
+    @Value("${config.invoice.description.cosas}")
     private String description;
 
     @Autowired
+    @Qualifier("office")
     private List<Item> items;
+
+    // esta anotación sirve para manipular los datos despues de instanciarlos en el constructor
+    @PostConstruct
+    public void init(){
+        System.out.println("Creando el componente de la factura");
+        client.setName(client.getName().concat(" Rodriguez"));
+        System.out.println(client.getName());
+        description = description.concat(" del cliente: " ).concat(client.getName());
+    }
+
+    // esto se ejecuta en el momento en el que el componente se destruye
+    @PreDestroy
+    public void destroy(){
+        System.out.println("Destruyendo el componente factura!");
+    }
 
     public Client getClient() {
         return client;
